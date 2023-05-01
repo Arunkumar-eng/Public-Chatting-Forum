@@ -23,7 +23,7 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 if __name__ == '__main__':
     # socketio.run(app)
-    app.run(host = '192.168.120.1', port=8081)
+    app.run(host = '192.168.1.40', port=8081)
 
 # if __name__ == '__main__':
 #     http_server = WSGIServer(('172.16.4.150', 8081), app, handler_class=WebSocketHandler)
