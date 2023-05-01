@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Flask_Chat_App</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  } */
+  html {
+    font-family: "Montserrat", sans-serif;
+  }
+  body {
+    background: #fbe3e8;
+    background-image: url("https://www.transparenttextures.com/patterns/food.png");;
+    padding: 0 16px;
+  }
+header {
+    background-color: #ff414e;
+    margin: auto -16px;
+    padding: 16px 32px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  header h1 {
+    color: #fbe3e8;
+    font-family: "McLaren", cursive;
+    font-weight: 200;
+    text-align: center;
+  }
+  form {
+    position: relative;
+    width: 480px;
+    margin: 30px auto 20px auto;
+    background: #fbe3e8;
+    padding: 15px;
+    border-radius: 7px;
+    box-shadow: 0 1px 5px rgb(138, 137, 137);
+  }
+  form input,
+  form textarea {
+    width: 100%;
+    border: none;
+    padding: 4px;
+    outline: none;
+    font-size: 1.2em;
+    font-family: inherit;
+    resize: none;
+  }
+  form button {
+    position: absolute;
+    right: 18px;
+    bottom: -18px;
+    background: #ff414e;
+    color: #fbe3e8;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    outline: none;
+  }
+  .logo img{
+  height: 45px;
+}
+.note {
+    background: #e7dddf;
+    border-radius: 7px;
+    box-shadow: 0 2px 5px #ccc;
+    padding: 10px;
+    width: 240px;
+    margin: 16px;
+    float: left;
+  }
+  .note h1 {
+    font-size: 1.1em;
+    margin-bottom: 6px;
+  }
+  .note p {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  footer {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;
+  }
+  
+  footer p {
+    color: #ff8928;
+  }
+  .link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  </style>
+</head>
+<body>
+    <header >
+      <a href="session.html" class="logo">
+        <img src="Images/logo1.svg" alt="">
+      </a>
+      <h1 >Welcome to Mepco's Public Chatting Forum</h1>
+    </header>
+    <form action="/session" method="POST">
+      <input type="text" class="username" placeholder="User Name"/>
+      <input type="text" class="message" placeholder="Messages"/>
+      <input type="submit"/>
+    </form>
+      <div>
+        <h3 style='color: #ccc;font-size: 30px; text-align: center;'>No message yet..</h3>
+      </div>
+        
+    <div class="message_holder"></div>
+    <footer>
+      <p>
+          Made with ❤️ by <a class="link" href="https://github.com/Arunkumar-eng" target="_blank">Arunkumar</a>
+      </p>
+  </footer>
+
+    
+  
+  
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
+  <script type="text/javascript">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+    socket.on( 'connect', function() {
+      socket.emit( 'my event', {
+        data: 'User Connected'
+      } )
+      var form = $( 'form' ).on( 'submit', function( e ) {
+        e.preventDefault()
+        let user_name = $( 'input.username' ).val()
+        let user_input = $( 'input.message' ).val()
+        socket.emit( 'my event', {
+          user_name : user_name,
+          message : user_input
+        } )
+        $( 'input.message' ).val( '' ).focus()
+      } )
+    } )
+    socket.on( 'my response', function( msg ) {
+      console.log( msg )
+      if( typeof msg.user_name !== 'undefined' ) {
+        $( 'h3' ).remove()
+        $('div.message_holder').append(' <div class="note">' + '<h1> ' + msg.user_name + '</h1>' + '<p>' + msg.message + '</p>' + '</div>' )
+      }
+    })
+  </script>
+
+</body>
+</html>
